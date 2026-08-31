@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réserver — Living Apart Tanger</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+
+  :root {
+    --ink: #142033;
+    --ink-soft: #4b5768;
+    --strait: #1b7a88;
+    --strait-deep: #0f5560;
+    --brass: #b9832e;
+    --brass-soft: #d9ad63;
+    --bg: #eef1ee;
+    --surface: #ffffff;
+    --alt: #e7dfc9;
+    --border: rgba(20, 32, 51, 0.12);
+    --shadow: rgba(20, 32, 51, 0.12);
+    --focus: #0f5560;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #edefec;
+      --ink-soft: #b6c0c2;
+      --strait: #4fb9c4;
+      --strait-deep: #7fd0d8;
+      --brass: #e0a94e;
+      --brass-soft: #f0c479;
+      --bg: #0e161f;
+      --surface: #16212c;
+      --alt: #1b2a2c;
+      --border: rgba(237, 239, 236, 0.16);
+      --shadow: rgba(0, 0, 0, 0.4);
+      --focus: #7fd0d8;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #edefec;
+    --ink-soft: #b6c0c2;
+    --strait: #4fb9c4;
+    --strait-deep: #7fd0d8;
+    --brass: #e0a94e;
+    --brass-soft: #f0c479;
+    --bg: #0e161f;
+    --surface: #16212c;
+    --alt: #1b2a2c;
+    --border: rgba(237, 239, 236, 0.16);
+    --shadow: rgba(0, 0, 0, 0.4);
+    --focus: #7fd0d8;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Work Sans', -apple-system, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  :lang(ar) { font-family: 'IBM Plex Sans Arabic', 'Work Sans', sans-serif; }
+  html[dir="rtl"] .eyebrow { letter-spacing: 0; text-transform: none; }
+
+  h1, h2, h3 { font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif; font-weight: 400; text-wrap: balance; margin: 0; }
+  :lang(ar) h1, :lang(ar) h2, :lang(ar) h3 { font-family: 'IBM Plex Sans Arabic', sans-serif; font-weight: 600; }
+  p { margin: 0; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+
+  .skip-link {
+    position: absolute; left: -999px; top: 0; z-index: 200;
+    background: var(--surface); color: var(--ink); padding: 0.8rem 1.2rem;
+    border-radius: 0 0 8px 0; border: 1px solid var(--border);
+  }
+  .skip-link:focus { left: 0; }
+
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  .eyebrow {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--strait-deep); display: inline-block; margin-bottom: 0.7rem;
+  }
+  :root[data-theme="dark"] .eyebrow, @media (prefers-color-scheme: dark) { }
+  .eyebrow.on-dark { color: var(--brass-soft); }
+
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
+  section { padding: clamp(3.5rem, 7vw, 6.5rem) 0; }
+  .section-head { max-width: 640px; margin-bottom: 2.8rem; }
+  .section-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.7rem); }
+  .alt-bg { background: var(--alt); }
+
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    * { scroll-behavior: auto !important; animation-duration: 0.001ms !important; }
+  }
+  html { scroll-behavior: smooth; }
+
+  /* Header */
+  .site-header {
+    position: sticky; top: 0; z-index: 100;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.9rem 1.5rem; max-width: 1160px; margin: 0 auto; }
+  .brand { display: flex; flex-direction: column; line-height: 1.1; text-decoration: none; }
+  .brand-name { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.5rem; }
+  :lang(ar) .brand-name { font-family: 'IBM Plex Sans Arabic', sans-serif; font-style: normal; font-weight: 700; }
+  .brand-tag { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+  .nav-collapse { display: flex; align-items: center; gap: 1.8rem; flex: 1; justify-content: space-between; margin: 0 1.2rem; min-width: 0; }
+  .nav-links { display: flex; gap: 1.6rem; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+  .nav-links a { text-decoration: none; font-size: 0.92rem; font-weight: 500; color: var(--ink-soft); }
+  .nav-links a:hover { color: var(--strait); }
+  .nav-right { display: flex; align-items: center; gap: 0.9rem; flex-shrink: 0; }
+  .lang-switch { display: flex; gap: 0.25rem; border: 1px solid var(--border); border-radius: 999px; padding: 0.2rem; }
+  .lang-btn { border: none; background: transparent; padding: 0.32rem 0.6rem; border-radius: 999px; font-size: 0.76rem; font-weight: 600; letter-spacing: 0.03em; cursor: pointer; color: var(--ink-soft); }
+  .lang-btn.active { background: var(--strait); color: #fff; }
+  .nav-wa-btn {
+    display: inline-flex; align-items: center; gap: 0.45rem; background: var(--strait); color: #fff;
+    text-decoration: none; padding: 0.55rem 1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+    white-space: nowrap;
+  }
+  .nav-wa-btn:hover { background: var(--strait-deep); }
+  .nav-wa-btn svg { width: 16px; height: 16px; }
+  .nav-ig-btn {
+    display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px;
+    border-radius: 50%; border: 1px solid var(--border); color: var(--ink-soft); flex-shrink: 0;
+  }
+  .nav-ig-btn:hover { color: var(--strait); border-color: var(--strait); }
+  .nav-ig-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .nav-ig-label { display: none; }
+  .nav-toggle { display: none; background: none; border: 1px solid var(--border); border-radius: 8px; width: 40px; height: 40px; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+  .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
+    content: ''; display: block; width: 18px; height: 2px; background: var(--ink); position: relative; transition: transform 0.2s ease;
+  }
+  .nav-toggle span::before { position: absolute; top: -6px; }
+  .nav-toggle span::after { position: absolute; top: 6px; }
+
+  @media (max-width: 900px) {
+    .nav { flex-wrap: wrap; }
+    .nav-toggle { display: inline-flex; }
+    .nav-collapse {
+      display: none; width: 100%; flex: none; margin: 0; order: 3;
+      flex-direction: column; align-items: stretch; gap: 1.2rem;
+      padding-top: 1.1rem; margin-top: 0.9rem; border-top: 1px solid var(--border);
+    }
+    .nav-collapse.open { display: flex; }
+    .nav-links { flex-direction: column; gap: 0.9rem; }
+    .nav-right { flex-direction: column; align-items: stretch; gap: 0.9rem; width: 100%; }
+    .lang-switch { align-self: flex-start; }
+    .nav-wa-btn { justify-content: center; }
+    .nav-ig-btn {
+      width: auto; height: auto; border-radius: 999px; justify-content: flex-start;
+      gap: 0.55rem; padding: 0.5rem 0.9rem; align-self: flex-start;
+    }
+    .nav-ig-label { display: inline; font-size: 0.85rem; font-weight: 600; }
+  }
+
+  /* Hero */
+  .hero {
+    position: relative; min-height: 88vh; min-height: 88svh; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start;
+    color: #f3f1ea;
+  }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+  .hero-photo { position: absolute; inset: 0; z-index: 1; opacity: 0; transition: opacity 0.8s ease; }
+  .hero-photo.active { opacity: 1; }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-photo::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(10,16,24,0.55) 0%, rgba(10,16,24,0.25) 32%, rgba(10,16,24,0.8) 100%);
+  }
+  .hero-top { position: relative; z-index: 2; padding: clamp(3rem, 9vw, 6rem) 1.5rem 0; max-width: 1160px; margin: 0 auto; width: 100%; }
+  .hero-eyebrow { color: var(--brass-soft); }
+  .hero-wordmark { font-size: clamp(2.3rem, 9vw, 6rem); font-style: italic; }
+  .hero-tagline { margin-top: 0.6rem; font-size: clamp(1rem, 2vw, 1.25rem); color: #e7e4da; max-width: 32ch; }
+
+  .hero-bottom {
+    position: relative; z-index: 2; margin-top: auto; padding: 0 1.5rem 5.5rem; max-width: 1160px; width: 100%; margin-inline: auto;
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .hero-caption-label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #cfd6d2; }
+  .hero-caption-name { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(1.3rem, 2.6vw, 1.8rem); }
+  :lang(ar) .hero-caption-name { font-family: 'IBM Plex Sans Arabic', sans-serif; font-style: normal; font-weight: 600; }
+  .hero-controls { display: flex; align-items: center; gap: 0.9rem; }
+  .hero-arrow {
+    width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(243,241,234,0.4); background: rgba(255,255,255,0.06);
+    color: #f3f1ea; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .hero-arrow:hover { background: rgba(255,255,255,0.16); }
+  .hero-dots { display: flex; gap: 0.5rem; }
+  .hero-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(243,241,234,0.35); border: none; cursor: pointer; padding: 0; }
+  .hero-dot.active { background: var(--brass-soft); }
+  .hero-scroll-hint {
+    position: absolute; bottom: 5.5rem; left: 50%; transform: translateX(-50%); z-index: 2;
+    font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #d8d4c8; text-align: center;
+  }
+  @media (max-width: 720px) {
+    .hero { min-height: 78vh; min-height: 78svh; }
+    .hero-scroll-hint { display: none; }
+    .hero-bottom { padding-bottom: 6.5rem; }
+  }
+  @media (max-width: 480px) {
+    .hero-top { padding-top: 2.4rem; }
+    .hero-bottom { gap: 1rem; }
+    .hero-caption-name { font-size: 1.15rem; }
+  }
+
+  /* Reservation bar */
+  .resbar-wrap { position: relative; z-index: 3; margin-top: -3.4rem; padding: 0 1rem; }
+  .resbar {
+    max-width: 1160px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; box-shadow: 0 18px 40px var(--shadow); padding: 1.6rem 2rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
+  }
+  @media (max-width: 600px) { .resbar { padding: 1.3rem 1.2rem; gap: 1.1rem; } }
+  .resbar-checks { display: flex; flex-wrap: wrap; gap: 1.4rem; list-style: none; margin: 0; padding: 0; }
+  .resbar-checks li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; color: var(--ink-soft); }
+  .resbar-checks svg { width: 18px; height: 18px; color: var(--strait); flex-shrink: 0; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    padding: 0.8rem 1.5rem; border-radius: 999px; font-weight: 600; font-size: 0.92rem; text-decoration: none;
+    border: none; cursor: pointer; white-space: nowrap;
+  }
+  .btn-brass { background: var(--brass); color: #1a1204; }
+  .btn-brass:hover { background: var(--brass-soft); }
+  .btn-strait { background: var(--strait); color: #fff; }
+  .btn-strait:hover { background: var(--strait-deep); }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--ink); }
+  .btn-outline:hover { border-color: var(--strait); color: var(--strait); }
+
+  /* Direct booking panel */
+  .direct-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; margin-top: 2rem; }
+  .direct-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.8rem; }
+  .direct-card .num { font-family: 'Instrument Serif', serif; font-size: 2.2rem; font-style: italic; color: var(--strait); }
+  .direct-card h3 { font-size: 1.15rem; margin: 0.5rem 0 0.5rem; }
+  .direct-card p { color: var(--ink-soft); font-size: 0.92rem; }
+  @media (max-width: 860px) { .direct-grid { grid-template-columns: 1fr; } }
+
+  /* Welcome */
+  .welcome-text { max-width: 760px; }
+  .welcome-p { font-size: 1.1rem; color: var(--ink-soft); }
+  .welcome-p strong { color: var(--ink); font-weight: 600; }
+  .service-hours-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; margin-top: 2.6rem; }
+  .sh-block h3 { font-size: 1.3rem; margin-bottom: 0.7rem; }
+  .sh-block p { color: var(--ink-soft); font-size: 0.96rem; }
+  @media (max-width: 780px) { .service-hours-grid { grid-template-columns: 1fr; } }
+
+  .lifestyle-placeholder {
+    margin-top: 3rem; border-radius: 18px; border: 1px dashed var(--border); background: var(--alt);
+    aspect-ratio: 16/7; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.6rem;
+    color: var(--ink-soft);
+  }
+  .lifestyle-placeholder svg { width: 34px; height: 34px; opacity: 0.6; }
+  .lifestyle-placeholder.has-photo { border: none; padding: 0; background: none; }
+  .lifestyle-placeholder.has-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 18px; display: block; }
+
+  /* Rooms */
+  .rooms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
+  .room-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+  .room-photo {
+    aspect-ratio: 4/3; background: linear-gradient(135deg, var(--strait) 0%, var(--strait-deep) 100%);
+    display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; color: rgba(255,255,255,0.85);
+    border-bottom: 1px dashed rgba(255,255,255,0.3);
+  }
+  .room-photo svg { width: 30px; height: 30px; }
+  .room-photo span { font-size: 0.78rem; letter-spacing: 0.05em; }
+  .room-photo.has-photo { background: none; border-bottom: none; padding: 0; }
+  .room-photo.has-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .room-card:nth-child(2) .room-photo { background: linear-gradient(135deg, var(--brass) 0%, #7a5a20 100%); }
+  .room-card:nth-child(3) .room-photo { background: linear-gradient(135deg, #16202c 0%, var(--strait-deep) 100%); }
+  .room-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; flex: 1; }
+  .room-body h3 { font-size: 1.25rem; }
+  .room-capacity { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--strait-deep); }
+  .room-body p.desc { color: var(--ink-soft); font-size: 0.92rem; flex: 1; }
+  @media (max-width: 900px) { .rooms-grid { grid-template-columns: 1fr; } }
+
+  /* Amenities */
+  .amenities-scroll-wrap { position: relative; }
+  .amenities-scroll-wrap::after {
+    content: ''; position: absolute; top: 0; right: 0; bottom: 0.7rem; width: 56px;
+    background: linear-gradient(90deg, transparent, var(--bg)); pointer-events: none;
+  }
+  .amenities-grid {
+    display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding-bottom: 0.7rem; -webkit-overflow-scrolling: touch; scrollbar-width: thin;
+  }
+  .amenities-grid::-webkit-scrollbar { height: 6px; }
+  .amenities-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+  .amenity {
+    flex: 0 0 auto; width: 172px; scroll-snap-align: start;
+    display: flex; flex-direction: column; gap: 0.7rem; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem;
+  }
+  .amenity svg { width: 24px; height: 24px; color: var(--strait); }
+  .amenity span { font-size: 0.9rem; font-weight: 500; }
+  @media (max-width: 480px) { .amenity { width: 148px; } }
+
+  /* Gallery */
+  .gallery-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6rem; max-width: 820px; margin: 0 auto; }
+  .gallery-tile {
+    aspect-ratio: 1; border-radius: 14px; border: 1px dashed var(--border); background: var(--surface);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--ink-soft);
+  }
+  .gallery-tile svg { width: 26px; height: 26px; opacity: 0.6; }
+  .gallery-tile span { font-size: 0.78rem; }
+  .gallery-tile.photo { border: none; padding: 0; }
+  .gallery-tile.photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; display: block; }
+  .gallery-note { margin-top: 1.6rem; color: var(--ink-soft); font-size: 0.92rem; max-width: 60ch; }
+  @media (max-width: 720px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; max-width: 100%; } }
+
+  /* Location */
+  .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+  .location-p { color: var(--ink-soft); margin-bottom: 1.4rem; }
+  .location-address { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.3rem; font-size: 0.95rem; font-weight: 500; color: var(--ink); }
+  .location-address svg { color: var(--strait); flex-shrink: 0; }
+  .location-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+  .location-list li { display: flex; align-items: center; gap: 0.7rem; font-size: 0.94rem; }
+  .location-list svg { width: 18px; height: 18px; color: var(--strait); flex-shrink: 0; }
+  .map-frame-wrap { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 4/3.2; background: var(--alt); }
+  .map-embed { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
+  .map-click-overlay { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: flex-end; padding: 1rem; text-decoration: none; }
+  .map-open-badge {
+    background: var(--surface); color: var(--ink); padding: 0.6rem 1.1rem; border-radius: 999px;
+    font-weight: 600; font-size: 0.85rem; box-shadow: 0 8px 20px var(--shadow); transition: background 0.2s ease, color 0.2s ease;
+  }
+  .map-click-overlay:hover .map-open-badge, .map-click-overlay:focus-visible .map-open-badge { background: var(--strait); color: #fff; }
+  @media (max-width: 860px) { .location-grid { grid-template-columns: 1fr; } }
+
+  /* Booking */
+  .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .booking-sub { color: var(--ink-soft); margin-top: 0.8rem; max-width: 46ch; }
+  .booking-form { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 1.8rem; display: flex; flex-direction: column; gap: 1.1rem; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .field label { font-size: 0.8rem; font-weight: 600; color: var(--ink-soft); }
+  .field input, .field select, .field textarea {
+    border: 1px solid var(--border); background: var(--bg); border-radius: 8px; padding: 0.65rem 0.8rem; color: var(--ink);
+  }
+  .field textarea { resize: vertical; min-height: 80px; }
+  .whatsapp-direct { display: flex; align-items: center; gap: 0.6rem; margin-top: 1rem; font-size: 0.9rem; color: var(--ink-soft); }
+  .whatsapp-direct a { color: var(--strait); font-weight: 600; text-decoration: none; }
+  @media (max-width: 860px) { .booking-grid { grid-template-columns: 1fr; } .field-row { grid-template-columns: 1fr; } }
+
+  /* Footer */
+  .site-footer { background: var(--ink); color: var(--bg); padding: 3rem 0 2rem; }
+  :root[data-theme="dark"] .site-footer, @media (prefers-color-scheme: dark) { }
+  .footer-grid { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; flex-wrap: wrap; }
+  .footer-brand { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.6rem; }
+  :lang(ar) .footer-brand { font-family: 'IBM Plex Sans Arabic', sans-serif; font-style: normal; font-weight: 700; }
+  .footer-contact { list-style: none; margin: 0.8rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-contact li { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; opacity: 0.85; }
+  .footer-contact svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .footer-contact a { text-decoration: none; opacity: 1; }
+  .footer-links { display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-end; }
+  html[dir="rtl"] .footer-links { align-items: flex-start; }
+  .footer-links a { font-size: 0.88rem; text-decoration: none; opacity: 0.85; }
+  .footer-links a:hover { opacity: 1; }
+  .footer-bottom { border-top: 1px solid rgba(238,241,238,0.15); margin-top: 2.2rem; padding-top: 1.2rem; font-size: 0.8rem; opacity: 0.6; }
+
+  /* Floating WhatsApp */
+  .whatsapp-float {
+    position: fixed; right: 1.4rem; bottom: 1.4rem; z-index: 150; width: 56px; height: 56px; border-radius: 50%;
+    background: #25D366; color: #fff; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.28); text-decoration: none;
+  }
+  .whatsapp-float svg { width: 28px; height: 28px; }
+  .whatsapp-float:hover { transform: scale(1.06); }
+
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Building tour */
+  .building-sub { margin-top: 0.6rem; color: var(--ink-soft); font-size: 0.98rem; max-width: 60ch; }
+  .building-carousel {
+    position: relative; width: 100vw; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;
+    margin-top: 2.2rem; overflow: hidden; height: min(62vh, 620px); min-height: 320px; background: var(--alt);
+  }
+  .building-carousel::after {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%);
+  }
+  .building-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; overflow: hidden; }
+  .building-slide.active { opacity: 1; }
+  .building-slide img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.02); transition: transform 5s ease-out; }
+  .building-slide.active img { transform: scale(1.13); }
+  .building-caption {
+    position: absolute; left: 1.4rem; bottom: 1.3rem; z-index: 2;
+    color: #fff; font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.45);
+  }
+  :lang(ar) .building-caption { font-family: 'IBM Plex Sans Arabic', sans-serif; font-style: normal; font-weight: 600; }
+  .building-dots { position: absolute; right: 1.4rem; bottom: 1.5rem; z-index: 2; display: flex; gap: 0.5rem; }
+  .building-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.45); border: none; padding: 0; }
+  .building-dot.active { background: var(--brass-soft); }
+  @media (max-width: 600px) {
+    .building-carousel { aspect-ratio: 4/3.6; }
+    .building-caption { font-size: 1.05rem; left: 1.1rem; bottom: 1.1rem; }
+    .building-dots { right: 1.1rem; bottom: 1.15rem; }
+  }
+
+  /* Standalone booking page hero */
+  .page-hero { background: linear-gradient(135deg, var(--strait-deep), var(--ink)); color: #f3f1ea; padding: clamp(3rem, 9vw, 5.5rem) 1.5rem clamp(2.4rem, 6vw, 3.2rem); }
+  .page-hero .back-link { display: inline-flex; align-items: center; gap: 0.45rem; color: #d8d4c8; font-size: 0.85rem; text-decoration: none; margin-bottom: 1.6rem; }
+  .page-hero .back-link:hover { color: #fff; }
+  .page-hero .back-link svg { width: 16px; height: 16px; }
+  .page-hero-brand { font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(1.6rem, 4vw, 2.2rem); }
+  .page-hero-tag { margin-top: 0.4rem; color: #cfd6d2; font-size: 0.92rem; }
+  .booking { padding-top: clamp(2.6rem, 6vw, 3.6rem); padding-bottom: clamp(2.6rem, 6vw, 3.6rem); }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link" data-i18n="skip_link">Aller au contenu principal</a>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="brand">
+      <span class="brand-name">Living Apart</span>
+      <span class="brand-tag" data-i18n="brand_tag">Tanger, Maroc</span>
+    </a>
+    <div class="nav-collapse" id="nav-collapse">
+      <ul class="nav-links">
+        <li><a href="index.html" data-i18n="nav_home">Accueil</a></li>
+        <li><a href="index.html#rooms" data-i18n="nav_rooms">Logements</a></li>
+        <li><a href="index.html#amenities" data-i18n="nav_amenities">Équipements</a></li>
+        <li><a href="index.html#gallery" data-i18n="nav_gallery">Galerie</a></li>
+        <li><a href="index.html#location" data-i18n="nav_location">Lieu</a></li>
+        <li><a href="#booking" data-i18n="nav_book">Réserver</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button class="lang-btn" data-lang="fr">FR</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="ar">AR</button>
+          <button class="lang-btn" data-lang="es">ES</button>
+        </div>
+        <a class="nav-ig-btn" href="https://www.instagram.com/living.apartment.hotel/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
+          <span class="nav-ig-label">Instagram</span>
+        </a>
+        <a class="nav-wa-btn" id="nav-wa-btn" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 0 1 6.9 12.1l-.3.5.7 2.6-2.7-.7-.5.3A8 8 0 1 1 12 4zM8.9 7.9c-.2 0-.5 0-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.4 1 2.9.8 3.5.8.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.4-.3-.1-1.7-.8-2-1-.3-.1-.5-.1-.6.1-.2.3-.7 1-.9 1.1-.1.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.1-.3 0-.4.1-.6l.4-.5c.1-.1.2-.3.2-.5.1-.1 0-.4 0-.5-.1-.2-.6-1.6-.9-2.2-.2-.5-.4-.5-.6-.5h-.5z"/></svg>
+          <span data-i18n="nav_wa_short">WhatsApp</span>
+        </a>
+      </div>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-collapse" aria-label="Menu"><span></span></button>
+  </nav>
+</header>
+
+<main id="main">
+<section class="page-hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      <span data-i18n="back_home">Retour à l'accueil</span>
+    </a>
+    <div class="page-hero-brand">Living Apart</div>
+    <p class="page-hero-tag" data-i18n="brand_tag">Tanger, Maroc</p>
+  </div>
+</section>
+
+  <section class="booking wrap" id="booking">
+    <div class="booking-grid">
+      <div class="reveal">
+        <span class="eyebrow" data-i18n="booking_eyebrow">Réserver</span>
+        <h2 data-i18n="booking_title">Envoyer une demande de réservation</h2>
+        <p class="booking-sub" data-i18n="booking_sub">Remplissez le formulaire, il ouvrira WhatsApp avec votre demande déjà rédigée.</p>
+        <div class="whatsapp-direct">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#25D366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 0 1 6.9 12.1l-.3.5.7 2.6-2.7-.7-.5.3A8 8 0 1 1 12 4zM8.9 7.9c-.2 0-.5 0-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.4 1 2.9.8 3.5.8.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.4-.3-.1-1.7-.8-2-1-.3-.1-.5-.1-.6.1-.2.3-.7 1-.9 1.1-.1.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.1-.3 0-.4.1-.6l.4-.5c.1-.1.2-.3.2-.5.1-.1 0-.4 0-.5-.1-.2-.6-1.6-.9-2.2-.2-.5-.4-.5-.6-.5h-.5z"/></svg>
+          <span data-i18n="whatsapp_direct">Ou contactez directement sur WhatsApp</span>
+          <a id="direct-wa-link" href="#" target="_blank" rel="noopener">+212 666 60 48 11</a>
+        </div>
+      </div>
+      <form class="booking-form reveal" id="booking-form">
+        <div class="field-row">
+          <div class="field">
+            <label for="f-name" data-i18n="form_name">Nom complet</label>
+            <input id="f-name" name="name" type="text" required>
+          </div>
+          <div class="field">
+            <label for="f-phone" data-i18n="form_phone">Téléphone (WhatsApp)</label>
+            <input id="f-phone" name="phone" type="tel">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-checkin" data-i18n="form_checkin">Arrivée</label>
+            <input id="f-checkin" name="checkin" type="date">
+          </div>
+          <div class="field">
+            <label for="f-checkout" data-i18n="form_checkout">Départ</label>
+            <input id="f-checkout" name="checkout" type="date">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-adults" data-i18n="form_adults">Adultes</label>
+            <input id="f-adults" name="adults" type="number" min="1" value="2">
+          </div>
+          <div class="field">
+            <label for="f-children" data-i18n="form_children">Enfants</label>
+            <input id="f-children" name="children" type="number" min="0" value="0">
+          </div>
+        </div>
+        <div class="field">
+          <label for="roomtype-select" data-i18n="form_roomtype">Logement souhaité</label>
+          <select id="roomtype-select" name="roomtype">
+            <option value="room1" data-i18n="room1_name">Appartement 1 Chambre Deluxe</option>
+            <option value="room2" data-i18n="room2_name">Appartement 2 Chambres Deluxe</option>
+            <option value="room3" data-i18n="room3_name">Appartement 3 Chambres Deluxe</option>
+            <option value="unsure" data-i18n="roomtype_opt4">Je ne sais pas encore</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-message" data-i18n="form_message">Message (optionnel)</label>
+          <textarea id="f-message" name="message"></textarea>
+        </div>
+        <button type="submit" class="btn btn-strait" data-i18n="form_submit">Envoyer via WhatsApp</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Living Apart</div>
+        <ul class="footer-contact">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg><span data-i18n="footer_addr">Tanger, Maroc</span></li>
+          <li><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 0 1 6.9 12.1l-.3.5.7 2.6-2.7-.7-.5.3A8 8 0 1 1 12 4z"/></svg><a id="footer-wa-link" href="#" target="_blank" rel="noopener">+212 666 60 48 11</a></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg><a href="https://www.instagram.com/living.apartment.hotel/" target="_blank" rel="noopener">@living.apartment.hotel</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.booking.com/hotel/ma/living-apart.html" target="_blank" rel="noopener" data-i18n="footer_booking_link">Voir aussi sur Booking.com</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footer-year">2026</span> Living Apart — <span data-i18n="footer_rights">Tous droits réservés.</span>
+    </div>
+  </div>
+</footer>
+
+<a class="whatsapp-float" id="wa-float" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 0 1 6.9 12.1l-.3.5.7 2.6-2.7-.7-.5.3A8 8 0 1 1 12 4zM8.9 7.9c-.2 0-.5 0-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.4 1 2.9.8 3.5.8.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.4-.3-.1-1.7-.8-2-1-.3-.1-.5-.1-.6.1-.2.3-.7 1-.9 1.1-.1.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.1-.3 0-.4.1-.6l.4-.5c.1-.1.2-.3.2-.5.1-.1 0-.4 0-.5-.1-.2-.6-1.6-.9-2.2-.2-.5-.4-.5-.6-.5h-.5z"/></svg>
+</a>
+
+<script>
+(function () {
+  var WA_NUMBER = "212666604811";
+
+  var translations = {
+    fr: {
+      skip_link: "Aller au contenu principal",
+      back_home: "Retour à l'accueil",
+      brand_tag: "Tanger, Maroc",
+      nav_home: "Accueil", nav_rooms: "Logements", nav_amenities: "Équipements", nav_gallery: "Galerie", nav_location: "Lieu", nav_book: "Réserver", nav_wa_short: "WhatsApp",
+      hero_eyebrow: "Tanger · Appartements Deluxe",
+      hero_tagline: "Là où deux mers se rencontrent",
+      hero_scroll: "Défiler pour découvrir ↓",
+      hero_caption_label: "Vous découvrez",
+      resbar_check1: "Réponse rapide sur WhatsApp",
+      resbar_check2: "Confirmation personnelle par votre hôte",
+      resbar_check3: "Les mêmes logements que sur Booking & Airbnb",
+      resbar_cta: "Réserver maintenant",
+      direct_eyebrow: "Réserver en direct",
+      direct_title: "Pourquoi nous écrire directement ?",
+      direct1_title: "Sans intermédiaire", direct1_desc: "Vous parlez directement à votre hôte, pas à un service client générique.",
+      direct2_title: "Réponse rapide", direct2_desc: "Une question sur les dates, le quartier ou l'arrivée ? Réponse sur WhatsApp en quelques minutes.",
+      direct3_title: "Flexibilité", direct3_desc: "Besoin d'ajuster les dates ou d'organiser une arrivée tardive ? C'est plus simple en direct.",
+      welcome_eyebrow: "Bienvenue",
+      welcome_title: "Bienvenue à Living Apart",
+      welcome_p: "Living Apart vous accueille dans un immeuble résidentiel calme du quartier de <strong>Malabata</strong>, à <strong>Tanger</strong> — la ville où l'<strong>Atlantique</strong> rencontre la <strong>Méditerranée</strong>. Appartements Deluxe pensés pour un séjour aussi confortable qu'à la maison, à deux pas de la plage et à quelques minutes du centre-ville.",
+      service_title: "Service personnalisé",
+      service_p: "Une question avant, pendant ou après votre séjour ? Votre hôte reste joignable directement sur WhatsApp, en français, en anglais, en arabe ou en espagnol, pour organiser votre arrivée, recommander une adresse ou simplement répondre à vos questions.",
+      hours_title: "Horaires & Réception",
+      hours_p: "Arrivée à partir de 14h00, départ avant 11h00. Si votre vol arrive plus tard, pas d'inquiétude : écrivez-nous sur WhatsApp avant votre arrivée pour organiser une remise des clés adaptée à votre horaire.",
+      photo_soon: "Photo à venir",
+      rooms_eyebrow: "Logements", rooms_title: "Choisissez votre formule",
+      building_eyebrow: "Sur place", building_title: "L'immeuble Living Apart",
+      building_sub: "De la façade illuminée à la vue depuis votre balcon : un aperçu de votre arrivée.",
+      building_cap_facade: "La façade", building_cap_entree: "L'entrée", building_cap_reception: "La réception", building_cap_hall: "Le hall &amp; les ascenseurs", building_cap_vue: "La vue depuis le balcon", building_cap_confort: "Le confort à l'intérieur",
+      room1_name: "Appartement 1 Chambre Deluxe", room1_desc: "Une chambre spacieuse, salon confortable et cuisine complète. Parfait pour un couple ou un voyageur en solo qui veut de l'espace.", room1_capacity: "2-3 pers.",
+      room2_name: "Appartement 2 Chambres Deluxe", room2_desc: "Deux chambres, salon lumineux, cuisine équipée. Idéal pour une famille ou deux couples voyageant ensemble.", room2_capacity: "4-5 pers.",
+      room3_name: "Appartement 3 Chambres Deluxe", room3_desc: "Trois chambres et un grand salon commun. Pensé pour les familles nombreuses ou les groupes d'amis.", room3_capacity: "6-8 pers.",
+      room_cta: "Demander cette formule",
+      discover_eyebrow: "À découvrir", discover_title: "En savoir plus",
+      discover_amenities_title: "Équipements", discover_amenities_desc: "Tout ce qu'il faut pour se sentir chez soi.",
+      discover_location_title: "Emplacement", discover_location_desc: "À Malabata, à 5 minutes de la plage et proche du centre.",
+      discover_gallery_title: "Galerie", discover_gallery_desc: "Un aperçu des lieux (photos à venir).",
+      discover_wifi_title: "Wifi gratuit", discover_wifi_desc: "Une connexion rapide dans tout le logement.",
+      discover_cta: "Voir plus",
+      amenities_eyebrow: "Tout est inclus", amenities_title: "Équipements",
+      amenity_wifi: "Wifi haut débit", amenity_kitchen: "Cuisine équipée", amenity_ac: "Climatisation", amenity_parking: "Parking sécurisé",
+      amenity_terrace: "Terrasse / Balcon", amenity_security: "Sécurité 24h/24", amenity_linen: "Linge de maison inclus", amenity_cleaning: "Ménage sur demande",
+      gallery_eyebrow: "En images", gallery_title: "Galerie",
+      gallery_note: "Photos de l'Appartement 1 Chambre Deluxe. Les photos des appartements 2 et 3 chambres seront ajoutées très prochainement.",
+      location_eyebrow: "Où nous sommes", location_title: "Entre plage et centre-ville",
+      location_p: "Living Apart se trouve dans le quartier de Malabata, à Tanger, à seulement 5 minutes de la plage de Malabata et à quelques minutes du centre-ville. Un cadre résidentiel calme, tout en restant proche de l'essentiel.",
+      location_address: "Rue Plage Mogador, 90070 Tanger, Maroc",
+      map_soon: "Carte à venir", map_open: "Voir sur Google Maps",
+      loc_item1: "Médina & Grand Socco", loc_item2: "Kasbah & vue sur le détroit", loc_item3: "Plage de Malabata (5 min)", loc_item4: "Port Tanger Ville", loc_item5: "Cap Spartel & grottes d'Hercule",
+      booking_eyebrow: "Réserver", booking_title: "Envoyer une demande de réservation",
+      booking_sub: "Remplissez le formulaire, il ouvrira WhatsApp avec votre demande déjà rédigée. Aucun paiement en ligne : on confirme ensemble les détails directement.",
+      form_name: "Nom complet", form_phone: "Téléphone (WhatsApp)", form_checkin: "Arrivée", form_checkout: "Départ", form_adults: "Adultes", form_children: "Enfants",
+      form_roomtype: "Logement souhaité", form_message: "Message (optionnel)", form_submit: "Envoyer via WhatsApp",
+      roomtype_opt4: "Je ne sais pas encore",
+      whatsapp_direct: "Ou contactez directement sur WhatsApp",
+      footer_addr: "Rue Plage Mogador, 90070 Tanger, Maroc", footer_rights: "Tous droits réservés.", footer_booking_link: "Voir aussi sur Booking.com",
+      wa_default_greeting: "Bonjour ! Je suis intéressé(e) par un séjour à Living Apart, Tanger. Pouvez-vous m'en dire plus ?",
+      wa_greeting: "Bonjour, je souhaite réserver à Living Apart (Tanger).",
+      wa_dates: "Dates", wa_travelers: "Voyageurs", wa_adults_short: "adultes", wa_children_short: "enfants", wa_roomtype: "Logement", wa_message: "Message", wa_name: "Nom", wa_phone: "Téléphone"
+    },
+    en: {
+      skip_link: "Skip to main content",
+      back_home: "Back to home",
+      brand_tag: "Tangier, Morocco",
+      nav_home: "Home", nav_rooms: "Apartments", nav_amenities: "Amenities", nav_gallery: "Gallery", nav_location: "Location", nav_book: "Book", nav_wa_short: "WhatsApp",
+      hero_eyebrow: "Tangier · Deluxe Apartments",
+      hero_tagline: "Where two seas meet",
+      hero_scroll: "Scroll to discover ↓",
+      hero_caption_label: "You're viewing",
+      resbar_check1: "Fast reply on WhatsApp",
+      resbar_check2: "Personally confirmed by your host",
+      resbar_check3: "The same apartments as on Booking & Airbnb",
+      resbar_cta: "Book now",
+      direct_eyebrow: "Book direct",
+      direct_title: "Why message us directly?",
+      direct1_title: "No middleman", direct1_desc: "You talk directly to your host, not a generic support line.",
+      direct2_title: "Fast answers", direct2_desc: "A question about dates, the neighborhood or arrival? A WhatsApp reply within minutes.",
+      direct3_title: "Flexibility", direct3_desc: "Need to adjust dates or arrange a late arrival? It's simpler when it's direct.",
+      welcome_eyebrow: "Welcome",
+      welcome_title: "Welcome to Living Apart",
+      welcome_p: "Living Apart welcomes you to a quiet residential building in the <strong>Malabata</strong> neighborhood of <strong>Tangier</strong> — the city where the <strong>Atlantic</strong> meets the <strong>Mediterranean</strong>. Deluxe apartments designed to feel as comfortable as home, steps from the beach and minutes from downtown.",
+      service_title: "Personal service",
+      service_p: "A question before, during or after your stay? Your host stays reachable directly on WhatsApp, in French, English, Arabic or Spanish, to help arrange your arrival, recommend a good address, or simply answer your questions.",
+      hours_title: "Hours & Check-in",
+      hours_p: "Check-in from 2:00 PM, check-out before 11:00 AM. If your flight lands later, no problem: message us on WhatsApp before you arrive so we can arrange key handover around your schedule.",
+      photo_soon: "Photo coming soon",
+      rooms_eyebrow: "Apartments", rooms_title: "Choose your stay",
+      building_eyebrow: "On site", building_title: "The Living Apart building",
+      building_sub: "From the illuminated façade to the view from your balcony: a glimpse of your arrival.",
+      building_cap_facade: "The façade", building_cap_entree: "The entrance", building_cap_reception: "The reception", building_cap_hall: "The lobby &amp; elevators", building_cap_vue: "The view from the balcony", building_cap_confort: "Comfort inside",
+      room1_name: "1-Bedroom Deluxe Apartment", room1_desc: "A spacious bedroom, a comfortable living room and a full kitchen. Perfect for a couple or a solo traveler who wants room to breathe.", room1_capacity: "2-3 guests",
+      room2_name: "2-Bedroom Deluxe Apartment", room2_desc: "Two bedrooms, a bright living room, an equipped kitchen. Ideal for a family or two couples traveling together.", room2_capacity: "4-5 guests",
+      room3_name: "3-Bedroom Deluxe Apartment", room3_desc: "Three bedrooms and a large shared living room. Built for big families or groups of friends.", room3_capacity: "6-8 guests",
+      room_cta: "Request this stay",
+      discover_eyebrow: "Discover", discover_title: "Learn more",
+      discover_amenities_title: "Amenities", discover_amenities_desc: "Everything you need to feel at home.",
+      discover_location_title: "Location", discover_location_desc: "In Malabata, 5 minutes from the beach and close to downtown.",
+      discover_gallery_title: "Gallery", discover_gallery_desc: "A glimpse of the space (photos coming soon).",
+      discover_wifi_title: "Free Wi-Fi", discover_wifi_desc: "Fast connection throughout the apartment.",
+      discover_cta: "See more",
+      amenities_eyebrow: "All included", amenities_title: "Amenities",
+      amenity_wifi: "High-speed Wi-Fi", amenity_kitchen: "Equipped kitchen", amenity_ac: "Air conditioning", amenity_parking: "Secure parking",
+      amenity_terrace: "Terrace / Balcony", amenity_security: "24-hour security", amenity_linen: "Linens included", amenity_cleaning: "Cleaning on request",
+      gallery_eyebrow: "In pictures", gallery_title: "Gallery",
+      gallery_note: "Photos of the 1-Bedroom Deluxe Apartment. Photos of the 2- and 3-bedroom apartments will be added very soon.",
+      location_eyebrow: "Where we are", location_title: "Between the beach and downtown",
+      location_p: "Living Apart is located in the Malabata neighborhood of Tangier, just 5 minutes from Malabata beach and a short ride from downtown. A quiet residential setting that still keeps you close to everything.",
+      location_address: "Rue Plage Mogador, 90070 Tangier, Morocco",
+      map_soon: "Map coming soon", map_open: "View on Google Maps",
+      loc_item1: "Medina & Grand Socco", loc_item2: "Kasbah & strait views", loc_item3: "Malabata Beach (5 min)", loc_item4: "Tanger Ville port", loc_item5: "Cape Spartel & Hercules Caves",
+      booking_eyebrow: "Book", booking_title: "Send a booking request",
+      booking_sub: "Fill in the form and it will open WhatsApp with your request already written. No online payment — we confirm every detail together, directly.",
+      form_name: "Full name", form_phone: "Phone (WhatsApp)", form_checkin: "Check-in", form_checkout: "Check-out", form_adults: "Adults", form_children: "Children",
+      form_roomtype: "Preferred apartment", form_message: "Message (optional)", form_submit: "Send via WhatsApp",
+      roomtype_opt4: "Not sure yet",
+      whatsapp_direct: "Or reach us directly on WhatsApp",
+      footer_addr: "Rue Plage Mogador, 90070 Tangier, Morocco", footer_rights: "All rights reserved.", footer_booking_link: "Also on Booking.com",
+      wa_default_greeting: "Hello! I'm interested in a stay at Living Apart, Tangier. Could you tell me more?",
+      wa_greeting: "Hello, I'd like to book a stay at Living Apart (Tangier).",
+      wa_dates: "Dates", wa_travelers: "Guests", wa_adults_short: "adults", wa_children_short: "children", wa_roomtype: "Apartment", wa_message: "Message", wa_name: "Name", wa_phone: "Phone"
+    },
+    ar: {
+      skip_link: "الانتقال إلى المحتوى الرئيسي",
+      back_home: "العودة إلى الرئيسية",
+      brand_tag: "طنجة، المغرب",
+      nav_home: "الرئيسية", nav_rooms: "الوحدات", nav_amenities: "المرافق", nav_gallery: "معرض الصور", nav_location: "الموقع", nav_book: "احجز", nav_wa_short: "واتساب",
+      hero_eyebrow: "طنجة · شقق ديلوكس",
+      hero_tagline: "حيث يلتقي بحران",
+      hero_scroll: "مرر للأسفل للاكتشاف ↓",
+      hero_caption_label: "أنتم تشاهدون",
+      resbar_check1: "رد سريع عبر واتساب",
+      resbar_check2: "تأكيد شخصي من مضيفكم",
+      resbar_check3: "نفس الوحدات المتوفرة على Booking و Airbnb",
+      resbar_cta: "احجز الآن",
+      direct_eyebrow: "الحجز المباشر",
+      direct_title: "لماذا تراسلنا مباشرة؟",
+      direct1_title: "بدون وسيط", direct1_desc: "تتحدثون مباشرة مع مضيفكم، وليس مع خدمة عملاء عامة.",
+      direct2_title: "ردود سريعة", direct2_desc: "سؤال حول التواريخ أو الحي أو موعد الوصول؟ رد عبر واتساب خلال دقائق.",
+      direct3_title: "مرونة", direct3_desc: "تحتاجون لتعديل التواريخ أو تنظيم وصول متأخر؟ الأمر أسهل بالتواصل المباشر.",
+      welcome_eyebrow: "مرحبًا بكم",
+      welcome_title: "مرحبًا بكم في Living Apart",
+      welcome_p: "يستقبلكم Living Apart في عمارة سكنية هادئة بحي <strong>المالاباطا</strong> في <strong>طنجة</strong> — المدينة التي يلتقي فيها <strong>المحيط الأطلسي</strong> بـ<strong>البحر الأبيض المتوسط</strong>. شقق ديلوكس مصممة لتمنحكم راحة المنزل، على بعد خطوات من الشاطئ ودقائق من وسط المدينة.",
+      service_title: "خدمة شخصية",
+      service_p: "لديكم سؤال قبل أو أثناء أو بعد إقامتكم؟ يبقى مضيفكم متاحًا مباشرة عبر واتساب، بالفرنسية والإنجليزية والعربية والإسبانية، لتنظيم وصولكم أو اقتراح عنوان أو ببساطة الإجابة عن أسئلتكم.",
+      hours_title: "أوقات الاستقبال",
+      hours_p: "تسجيل الوصول ابتداءً من الساعة 14:00، والمغادرة قبل الساعة 11:00. إذا وصلت رحلتكم في وقت متأخر، لا داعي للقلق: راسلونا عبر واتساب قبل وصولكم لتنظيم تسليم المفاتيح حسب توقيتكم.",
+      photo_soon: "الصورة قريبًا",
+      rooms_eyebrow: "الوحدات", rooms_title: "اختر إقامتك",
+      building_eyebrow: "في المكان", building_title: "عمارة Living Apart",
+      building_sub: "من الواجهة المضاءة إلى الإطلالة من الشرفة: لمحة عن وصولكم.",
+      building_cap_facade: "الواجهة", building_cap_entree: "المدخل", building_cap_reception: "الاستقبال", building_cap_hall: "الردهة والمصاعد", building_cap_vue: "الإطلالة من الشرفة", building_cap_confort: "الراحة في الداخل",
+      room1_name: "شقة ديلوكس بغرفة نوم واحدة", room1_desc: "غرفة نوم واسعة، صالة مريحة، ومطبخ كامل. مثالية لزوجين أو لمسافر منفرد يريد مساحة أكبر.", room1_capacity: "2-3 أشخاص",
+      room2_name: "شقة ديلوكس بغرفتي نوم", room2_desc: "غرفتا نوم، صالة مضيئة، ومطبخ مجهز. مثالية لعائلة أو زوجين مسافرين معًا.", room2_capacity: "4-5 أشخاص",
+      room3_name: "شقة ديلوكس بثلاث غرف نوم", room3_desc: "ثلاث غرف نوم وصالة مشتركة واسعة. مصممة للعائلات الكبيرة أو مجموعات الأصدقاء.", room3_capacity: "6-8 أشخاص",
+      room_cta: "اطلب هذه الوحدة",
+      discover_eyebrow: "اكتشف", discover_title: "المزيد من المعلومات",
+      discover_amenities_title: "المرافق", discover_amenities_desc: "كل ما تحتاجونه لتشعروا وكأنكم في منزلكم.",
+      discover_location_title: "الموقع", discover_location_desc: "في المالاباطا، على بعد 5 دقائق من الشاطئ وقريبة من وسط المدينة.",
+      discover_gallery_title: "معرض الصور", discover_gallery_desc: "لمحة عن المكان (الصور قريبًا).",
+      discover_wifi_title: "واي فاي مجاني", discover_wifi_desc: "اتصال سريع في جميع أنحاء الوحدة.",
+      discover_cta: "المزيد",
+      amenities_eyebrow: "كل ما تحتاجونه متوفر", amenities_title: "المرافق",
+      amenity_wifi: "واي فاي عالي السرعة", amenity_kitchen: "مطبخ مجهز", amenity_ac: "تكييف الهواء", amenity_parking: "موقف سيارات آمن",
+      amenity_terrace: "شرفة / بلكونة", amenity_security: "أمن على مدار الساعة", amenity_linen: "بياضات مشمولة", amenity_cleaning: "خدمة تنظيف عند الطلب",
+      gallery_eyebrow: "بالصور", gallery_title: "معرض الصور",
+      gallery_note: "صور شقة ديلوكس بغرفة نوم واحدة. ستُضاف قريبًا صور شقتي 2 و3 غرف نوم.",
+      location_eyebrow: "أين نحن", location_title: "بين الشاطئ ووسط المدينة",
+      location_p: "يقع Living Apart في حي المالاباطا بطنجة، على بعد 5 دقائق فقط من شاطئ المالاباطا وبضع دقائق من وسط المدينة. محيط سكني هادئ، مع بقائكم قريبين من كل شيء.",
+      location_address: "Rue Plage Mogador، 90070 طنجة، المغرب",
+      map_soon: "الخريطة قريبًا", map_open: "عرض على خرائط جوجل",
+      loc_item1: "المدينة القديمة والسوق الكبير", loc_item2: "القصبة وإطلالة على المضيق", loc_item3: "شاطئ المالاباطا (5 دقائق)", loc_item4: "ميناء طنجة المدينة", loc_item5: "رأس سبارطيل ومغارات هرقل",
+      booking_eyebrow: "احجز", booking_title: "أرسل طلب حجز",
+      booking_sub: "املأ النموذج وسيتم فتح واتساب مع طلبك جاهزًا. لا حاجة للدفع الإلكتروني — سنؤكد كل التفاصيل معًا مباشرة.",
+      form_name: "الاسم الكامل", form_phone: "الهاتف (واتساب)", form_checkin: "تاريخ الوصول", form_checkout: "تاريخ المغادرة", form_adults: "البالغون", form_children: "الأطفال",
+      form_roomtype: "الوحدة المفضلة", form_message: "رسالة (اختياري)", form_submit: "إرسال عبر واتساب",
+      roomtype_opt4: "لم أقرر بعد",
+      whatsapp_direct: "أو تواصل معنا مباشرة عبر واتساب",
+      footer_addr: "Rue Plage Mogador، 90070 طنجة، المغرب", footer_rights: "جميع الحقوق محفوظة.", footer_booking_link: "أيضًا على Booking.com",
+      wa_default_greeting: "مرحبًا! أنا مهتم بالإقامة في Living Apart بطنجة. هل يمكنكم إخباري بالمزيد؟",
+      wa_greeting: "مرحبًا، أرغب في الحجز في Living Apart (طنجة).",
+      wa_dates: "التواريخ", wa_travelers: "المسافرون", wa_adults_short: "بالغين", wa_children_short: "أطفال", wa_roomtype: "الوحدة", wa_message: "رسالة", wa_name: "الاسم", wa_phone: "الهاتف"
+    },
+    es: {
+      skip_link: "Ir al contenido principal",
+      back_home: "Volver al inicio",
+      brand_tag: "Tánger, Marruecos",
+      nav_home: "Inicio", nav_rooms: "Alojamientos", nav_amenities: "Servicios", nav_gallery: "Galería", nav_location: "Ubicación", nav_book: "Reservar", nav_wa_short: "WhatsApp",
+      hero_eyebrow: "Tánger · Apartamentos Deluxe",
+      hero_tagline: "Donde se encuentran dos mares",
+      hero_scroll: "Desliza para descubrir ↓",
+      hero_caption_label: "Estás viendo",
+      resbar_check1: "Respuesta rápida por WhatsApp",
+      resbar_check2: "Confirmación personal de tu anfitrión",
+      resbar_check3: "Los mismos apartamentos que en Booking y Airbnb",
+      resbar_cta: "Reservar ahora",
+      direct_eyebrow: "Reserva directa",
+      direct_title: "¿Por qué escribirnos directamente?",
+      direct1_title: "Sin intermediarios", direct1_desc: "Hablas directamente con tu anfitrión, no con un servicio de atención genérico.",
+      direct2_title: "Respuestas rápidas", direct2_desc: "¿Alguna pregunta sobre fechas, el barrio o la llegada? Respuesta por WhatsApp en minutos.",
+      direct3_title: "Flexibilidad", direct3_desc: "¿Necesitas ajustar fechas u organizar una llegada tardía? Es más sencillo de forma directa.",
+      welcome_eyebrow: "Bienvenida",
+      welcome_title: "Bienvenido a Living Apart",
+      welcome_p: "Living Apart te da la bienvenida a un tranquilo edificio residencial en el barrio de <strong>Malabata</strong>, en <strong>Tánger</strong> — la ciudad donde el <strong>Atlántico</strong> se encuentra con el <strong>Mediterráneo</strong>. Apartamentos Deluxe pensados para sentirte como en casa, a pasos de la playa y a minutos del centro.",
+      service_title: "Servicio personalizado",
+      service_p: "¿Alguna pregunta antes, durante o después de tu estancia? Tu anfitrión sigue disponible directamente por WhatsApp, en francés, inglés, árabe o español, para organizar tu llegada, recomendarte una buena dirección o simplemente responder tus preguntas.",
+      hours_title: "Horarios y Recepción",
+      hours_p: "Entrada a partir de las 14:00, salida antes de las 11:00. Si tu vuelo llega más tarde, no te preocupes: escríbenos por WhatsApp antes de llegar para organizar la entrega de llaves según tu horario.",
+      photo_soon: "Foto próximamente",
+      rooms_eyebrow: "Alojamientos", rooms_title: "Elige tu alojamiento",
+      building_eyebrow: "En el lugar", building_title: "El edificio Living Apart",
+      building_sub: "Desde la fachada iluminada hasta la vista desde tu balcón: un vistazo a tu llegada.",
+      building_cap_facade: "La fachada", building_cap_entree: "La entrada", building_cap_reception: "La recepción", building_cap_hall: "El vestíbulo y los ascensores", building_cap_vue: "La vista desde el balcón", building_cap_confort: "El confort en el interior",
+      room1_name: "Apartamento Deluxe de 1 Habitación", room1_desc: "Una habitación amplia, un salón cómodo y una cocina completa. Perfecto para una pareja o un viajero solo que busca espacio.", room1_capacity: "2-3 personas",
+      room2_name: "Apartamento Deluxe de 2 Habitaciones", room2_desc: "Dos habitaciones, un salón luminoso, una cocina equipada. Ideal para una familia o dos parejas viajando juntas.", room2_capacity: "4-5 personas",
+      room3_name: "Apartamento Deluxe de 3 Habitaciones", room3_desc: "Tres habitaciones y un amplio salón compartido. Pensado para familias numerosas o grupos de amigos.", room3_capacity: "6-8 personas",
+      room_cta: "Solicitar este alojamiento",
+      discover_eyebrow: "Descubre", discover_title: "Saber más",
+      discover_amenities_title: "Servicios", discover_amenities_desc: "Todo lo necesario para sentirte como en casa.",
+      discover_location_title: "Ubicación", discover_location_desc: "En Malabata, a 5 minutos de la playa y cerca del centro.",
+      discover_gallery_title: "Galería", discover_gallery_desc: "Un vistazo al espacio (fotos próximamente).",
+      discover_wifi_title: "Wi-Fi gratis", discover_wifi_desc: "Conexión rápida en todo el apartamento.",
+      discover_cta: "Ver más",
+      amenities_eyebrow: "Todo incluido", amenities_title: "Servicios",
+      amenity_wifi: "Wi-Fi de alta velocidad", amenity_kitchen: "Cocina equipada", amenity_ac: "Aire acondicionado", amenity_parking: "Estacionamiento seguro",
+      amenity_terrace: "Terraza / Balcón", amenity_security: "Seguridad 24 horas", amenity_linen: "Ropa de cama incluida", amenity_cleaning: "Limpieza a solicitud",
+      gallery_eyebrow: "En imágenes", gallery_title: "Galería",
+      gallery_note: "Fotos del Apartamento Deluxe de 1 Habitación. Las fotos de los apartamentos de 2 y 3 habitaciones se añadirán muy pronto.",
+      location_eyebrow: "Dónde estamos", location_title: "Entre la playa y el centro",
+      location_p: "Living Apart está ubicado en el barrio de Malabata, en Tánger, a solo 5 minutos de la playa de Malabata y a pocos minutos del centro de la ciudad. Un entorno residencial tranquilo, sin dejar de estar cerca de todo.",
+      location_address: "Rue Plage Mogador, 90070 Tánger, Marruecos",
+      map_soon: "Mapa próximamente", map_open: "Ver en Google Maps",
+      loc_item1: "Medina y Gran Zoco", loc_item2: "Alcazaba y vistas al estrecho", loc_item3: "Playa de Malabata (5 min)", loc_item4: "Puerto de Tánger Ciudad", loc_item5: "Cabo Espartel y Cuevas de Hércules",
+      booking_eyebrow: "Reservar", booking_title: "Enviar una solicitud de reserva",
+      booking_sub: "Completa el formulario y se abrirá WhatsApp con tu solicitud ya redactada. Sin pago en línea: confirmamos cada detalle juntos, directamente.",
+      form_name: "Nombre completo", form_phone: "Teléfono (WhatsApp)", form_checkin: "Llegada", form_checkout: "Salida", form_adults: "Adultos", form_children: "Niños",
+      form_roomtype: "Alojamiento preferido", form_message: "Mensaje (opcional)", form_submit: "Enviar por WhatsApp",
+      roomtype_opt4: "Aún no lo sé",
+      whatsapp_direct: "O contáctanos directamente por WhatsApp",
+      footer_addr: "Rue Plage Mogador, 90070 Tánger, Marruecos", footer_rights: "Todos los derechos reservados.", footer_booking_link: "También en Booking.com",
+      wa_default_greeting: "¡Hola! Me interesa una estancia en Living Apart, Tánger. ¿Podrían contarme más?",
+      wa_greeting: "Hola, quisiera reservar en Living Apart (Tánger).",
+      wa_dates: "Fechas", wa_travelers: "Viajeros", wa_adults_short: "adultos", wa_children_short: "niños", wa_roomtype: "Alojamiento", wa_message: "Mensaje", wa_name: "Nombre", wa_phone: "Teléfono"
+    }
+  };
+
+  var currentLang = "fr";
+  try { currentLang = localStorage.getItem("la_lang") || "fr"; } catch (e) {}
+
+  function applyLang(lang) {
+    var dict = translations[lang];
+    if (!dict) return;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n");
+      if (dict[key] !== undefined) el.textContent = dict[key];
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n-html");
+      if (dict[key] !== undefined) el.innerHTML = dict[key];
+    });
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    document.querySelectorAll(".lang-btn").forEach(function (b) {
+      b.classList.toggle("active", b.dataset.lang === lang);
+    });
+    try { localStorage.setItem("la_lang", lang); } catch (e) {}
+    currentLang = lang;
+    updateWhatsAppLinks();
+  }
+
+  document.querySelectorAll(".lang-btn").forEach(function (b) {
+    b.addEventListener("click", function () { applyLang(b.dataset.lang); });
+  });
+
+  /* Mobile nav */
+  var navToggle = document.getElementById("nav-toggle");
+  var navLinks = document.getElementById("nav-collapse");
+  navToggle.addEventListener("click", function () {
+    var open = navLinks.classList.toggle("open");
+    navToggle.setAttribute("aria-expanded", open);
+  });
+  document.querySelectorAll("#nav-collapse a").forEach(function (a) {
+    a.addEventListener("click", function () { navLinks.classList.remove("open"); });
+  });
+
+  /* WhatsApp links */
+  function updateWhatsAppLinks() {
+    var dict = translations[currentLang];
+    var floatUrl = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(dict.wa_default_greeting);
+    document.getElementById("wa-float").href = floatUrl;
+    document.getElementById("nav-wa-btn").href = floatUrl;
+    document.getElementById("direct-wa-link").href = floatUrl;
+    document.getElementById("footer-wa-link").href = floatUrl;
+  }
+
+  var bookingForm = document.getElementById("booking-form");
+  bookingForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var dict = translations[currentLang];
+    var data = new FormData(bookingForm);
+    var name = data.get("name") || "";
+    var phone = data.get("phone") || "";
+    var checkin = data.get("checkin") || "";
+    var checkout = data.get("checkout") || "";
+    var adults = data.get("adults") || "1";
+    var children = data.get("children") || "0";
+    var select = document.getElementById("roomtype-select");
+    var roomLabel = select.options[select.selectedIndex].textContent;
+    var message = data.get("message") || "";
+
+    var lines = [dict.wa_greeting];
+    if (checkin || checkout) lines.push(dict.wa_dates + ": " + checkin + " \u2192 " + checkout);
+    lines.push(dict.wa_travelers + ": " + adults + " " + dict.wa_adults_short + ", " + children + " " + dict.wa_children_short);
+    lines.push(dict.wa_roomtype + ": " + roomLabel);
+    if (message) lines.push(dict.wa_message + ": " + message);
+    lines.push("");
+    lines.push(dict.wa_name + ": " + name);
+    if (phone) lines.push(dict.wa_phone + ": " + phone);
+
+    var text = encodeURIComponent(lines.join("\n"));
+    window.open("https://wa.me/" + WA_NUMBER + "?text=" + text, "_blank", "noopener");
+  });
+
+  /* Preselect room type from ?room= query param (arriving from a homepage CTA) */
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var presetRoom = params.get("room");
+    var roomSelectEl = document.getElementById("roomtype-select");
+    if (presetRoom && roomSelectEl && [].slice.call(roomSelectEl.options).some(function (o) { return o.value === presetRoom; })) {
+      roomSelectEl.value = presetRoom;
+    }
+  } catch (e) {}
+
+  /* Scroll reveal */
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add("visible"); io.unobserve(entry.target); }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("visible"); });
+  }
+
+  document.getElementById("footer-year").textContent = new Date().getFullYear();
+
+  applyLang(currentLang);
+})();
+</script>
+</body>
+</html>
